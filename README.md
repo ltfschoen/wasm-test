@@ -27,7 +27,7 @@ Example programs compiled to [WebAssembly](http://webassembly.org/) (WASM), serv
   ```
 * Run server in the container
   ```
-  /emsdk/emscripten/incoming/emrun --no_browser --no_emrun_detect --hostname=0.0.0.0 --port 8080 .
+  emrun --no_browser --no_emrun_detect --hostname=0.0.0.0 --port 8080 .
   ```
 * Go to http://localhost:5000/src/hello/hello.html (or http://<MACHINE_VM_IP>:5000/src/hello/hello.html)
 

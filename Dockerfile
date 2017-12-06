@@ -42,12 +42,7 @@ RUN cd ./emsdk && bash ./emsdk_env.sh --build=Release
 # RUN echo 'export PATH="/emsdk/emscripten/incoming/emrun:$PATH";' >> ~/.bashrc && . ~/.bashrc
 
 # Alternative approach to change $PATH
-# ENV PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/emsdk/emscripten/incoming/emcc:/emsdk/emscripten/incoming/emrun"
-
-# FIXME - $PATH change not working since running `emcc` returns `emcc: not found`
-# Note: Within the container changing the $PATH works with `echo 'PATH="/emsdk/emscripten/incoming/emcc:$PATH"; export PATH' >> ~/.bashrc && . ~/.bashrc`
-
-# RUN cat ~/.bashrc && echo $PATH
+ENV PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/emsdk/emscripten/incoming"
 
 # RUN git clone https://github.com/juj/emsdk.git
 # RUN cd ./emsdk && ./emsdk install latest
@@ -61,9 +56,9 @@ RUN mkdir -p /code/src/hello
 COPY ./src/hello/hello.c /code/src/hello 
 # Note: C file input and HTML file output must be in same directory 
 # FIXME - When fix $PATH then change to just `emcc` and `emrun`
-RUN /emsdk/emscripten/incoming/emcc /code/src/hello/hello.c -s WASM=1 -o /code/src/hello/hello.html
+RUN emcc /code/src/hello/hello.c -s WASM=1 -o /code/src/hello/hello.html
 # Note: Must specifiy hostname of 0.0.0.0 or use container IP address (see README.md)
-# RUN /emsdk/emscripten/incoming/emrun --no_browser --no_emrun_detect --hostname=0.0.0.0 --port 8080 .
+# RUN emrun --no_browser --no_emrun_detect --hostname=0.0.0.0 --port 8080 .
 
 ADD . /code
 WORKDIR /code
