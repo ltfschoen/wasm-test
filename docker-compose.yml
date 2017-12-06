@@ -1,0 +1,13 @@
+version: '3'
+services:
+  sandbox:
+    # uses image build from Dockerfile in current directory
+    build:
+      context: .
+    # forward exposed port 8080 on container to port 5000 on host machine
+    ports:
+      - "5000:8080"
+    image: wasm_sandbox:tag
+    volumes:
+      - .:/code
+    command: tail -f /dev/null
