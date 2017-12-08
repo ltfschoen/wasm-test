@@ -1462,9 +1462,9 @@ function integrateWasmJS() {
 
   var method = 'native-wasm';
 
-  var wasmTextFile = 'hello.wast';
-  var wasmBinaryFile = 'hello.wasm';
-  var asmjsCodeFile = 'hello.temp.asm.js';
+  var wasmTextFile = 'question.wast';
+  var wasmBinaryFile = 'question.wasm';
+  var asmjsCodeFile = 'question.temp.asm.js';
 
   if (typeof Module['locateFile'] === 'function') {
     wasmTextFile = Module['locateFile'](wasmTextFile);
@@ -1735,7 +1735,7 @@ var ASM_CONSTS = [];
 
 STATIC_BASE = Runtime.GLOBAL_BASE;
 
-STATICTOP = STATIC_BASE + 7136;
+STATICTOP = STATIC_BASE + 7168;
 /* global initializers */  __ATINIT__.push();
 
 
@@ -1744,7 +1744,7 @@ memoryInitializer = null;
 
 
 
-var STATIC_BUMP = 7136;
+var STATIC_BUMP = 7168;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 

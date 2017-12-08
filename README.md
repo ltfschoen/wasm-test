@@ -25,14 +25,23 @@ Example programs compiled to [WebAssembly](http://webassembly.org/) (WASM), serv
   ```
   docker-compose up --force-recreate --build -d && docker exec -it $(docker ps -q) bash
   ```
+  * Alternative `docker-compose up --force-recreate --build -d && docker-compose exec sandbox bash`
 * Run server in the container
   ```
   emrun --no_browser --no_emrun_detect --hostname=0.0.0.0 --port 8080 .
   ```
 * Go to http://localhost:5000/src/hello/hello.html (or http://<MACHINE_VM_IP>:5000/src/hello/hello.html)
 
+* Go to http://localhost:5000/src/question/question.html, enter a number in the popup window and press ENTER, then press CANCEL when the popup appears again
+
+* Go to http://localhost:5000/src/quiz/quiz.html, enter 1 in popup window and press ENTER, then enter "wasm" in next popup window and press ENTER, then press CANCEL.
+  * WARNING: Does not show the output in the Emscripten console, even though running the compiled C program works with `./src/quiz/quiz`
+
 ## TODO <a id="chapter-todo"></a>
 
+* [ ] - Fix so compiling the programs within the Dockerfile generates all outputs. Currently it only works when you compile once you are in the container bash. The repository source control already contains all pre-compiled outputs. 
+* [ ] - Get CMake from apt-get if possible
+* [ ] - Get Python 2.7 with apt-get install python2 and also python2-dev
 * [ ] - Other WASM Dockerfile Example - https://github.com/bgard6977/docker-wasm/blob/master/Dockerfile
 
 ## Troubleshooting <a id="chapter-troubleshooting"></a>
@@ -70,6 +79,24 @@ docker inspect <CONTAINER_ID>
 ```
 docker inspect --format='{{.NetworkSettings.Networks.wasmtest_default.IPAddress}}' <CONTAINER_ID>
 ```
+
+* How can I compile a C program on macOS using GCC (without WASM)?
+  ```
+  gcc ./src/question/question.c -o ./src/question/question; ./src/question/question;
+  gcc ./src/quiz/quiz.c -o ./src/quiz/quiz; ./src/quiz/quiz;
+  ```
+
+* How to write a basic C program?
+  * Reference: https://www.physics.ohio-state.edu/~ntg/780/handouts/interactive_input_in_C.pdf
+
+* What are strings in C language?
+  * Reference: https://stackoverflow.com/questions/14709323/does-c-have-a-string-type
+
+* How to use `sscanf` in C language?
+  * Reference: http://docs.roxen.com/pike/7.0/tutorial/strings/sscanf.xml
+
+* How to assign to an array in C language?
+  * Reference: https://stackoverflow.com/questions/32313150/array-type-char-is-not-assignable
 
 ## References <a id="chapter-references"></a>
 

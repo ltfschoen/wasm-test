@@ -52,11 +52,15 @@ ENV PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/emsdk/em
 # RUN echo 'PATH="/emsdk/emscripten/1.37.22/emcc:$PATH";' >> ~/.bashrc && . ~/.bashrc
 # RUN echo 'PATH="/emsdk/emscripten/1.37.22/emrun:$PATH";' >> ~/.bashrc && . ~/.bashrc
 
-RUN mkdir -p /code/src/hello
+RUN mkdir -p /code/src/hello /code/src/question /code/src/quiz
 COPY ./src/hello/hello.c /code/src/hello 
+COPY ./src/question/question.c /code/src/question
+COPY ./src/quiz/quiz.c /code/src/quiz 
 # Note: C file input and HTML file output must be in same directory 
 # FIXME - When fix $PATH then change to just `emcc` and `emrun`
 RUN emcc /code/src/hello/hello.c -s WASM=1 -o /code/src/hello/hello.html
+RUN emcc /code/src/question/question.c -s WASM=1 -o /code/src/question/question.html
+RUN emcc /code/src/quiz/quiz.c -s WASM=1 -o /code/src/quiz/quiz.html
 # Note: Must specifiy hostname of 0.0.0.0 or use container IP address (see README.md)
 # RUN emrun --no_browser --no_emrun_detect --hostname=0.0.0.0 --port 8080 .
 
