@@ -54,6 +54,7 @@ ENV PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/emsdk/em
 
 RUN mkdir -p /code/src/hello /code/src/question /code/src/quiz
 COPY ./src/hello/hello.c /code/src/hello 
+COPY ./src/hello2/hello2.c /code/src/hello2 
 COPY ./src/question/question.c /code/src/question
 COPY ./src/quiz/quiz.c /code/src/quiz 
 # Note: C file input and HTML file output must be in same directory 

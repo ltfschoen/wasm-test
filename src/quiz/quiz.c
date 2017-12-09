@@ -1,6 +1,7 @@
 #include <string.h> /* import for use of strcmp, strcpy */
 #include <ctype.h> /* import tolower function */
 #include <stdio.h>
+#include <emscripten/emscripten.h>
 
 /* function prototype declaration for the function menu */
 int menu();
@@ -26,7 +27,7 @@ int main(int argc, char ** argv) {
  *
  *   returns: the user input 
  */
-int menu() {
+int EMSCRIPTEN_KEEPALIVE menu() {
   char line[100];               /* specify the line that is to be read from the user input terminal */
   int menu_user_input_latest;   /* an integer chosen by the user */
 

@@ -8,7 +8,11 @@ Example programs compiled to [WebAssembly](http://webassembly.org/) (WASM), serv
 
 ## Screenshots
 
+* Hello example
 ![alt tag](https://raw.githubusercontent.com/ltfschoen/wasm-test/master/screenshots/webpage.png)
+
+* Quiz example
+![alt tag](https://raw.githubusercontent.com/ltfschoen/wasm-test/master/screenshots/quiz.png)
 
 # Table of Contents
   * [Quick Start Guide](#chapter-0)
@@ -26,25 +30,25 @@ Example programs compiled to [WebAssembly](http://webassembly.org/) (WASM), serv
   docker-compose up --force-recreate --build -d && docker exec -it $(docker ps -q) bash
   ```
   * Alternative `docker-compose up --force-recreate --build -d && docker-compose exec sandbox bash`
-* Run server in the container
-  ```
-  emrun --no_browser --no_emrun_detect --hostname=0.0.0.0 --port 8080 .
-  ```
-
 * Use Emscripten to generate a binary WASM module (`.wasm`) from our C program (`.c`), a HTML (`.html`) page and JavaScript (`.js`) "glue" code to load, compile, and instantiate the WASM code and display its output in a web browser
   ```
   emcc /code/src/hello/hello.c -s WASM=1 -o /code/src/hello/hello.html
   emcc /code/src/question/question.c -s WASM=1 -o /code/src/question/question.html
   emcc /code/src/quiz/quiz.c -s WASM=1 -o /code/src/quiz/quiz.html
   ```
-
+* Perform the above using a [custom HTML template](https://developer.mozilla.org/en-US/docs/WebAssembly/C_to_wasm): 
+  ```
+  emcc -o /code/src/hello2/hello2.html /code/src/hello2/hello2.c -O3 -s WASM=1 --shell-file /emsdk/emscripten/incoming/src/shell_minimal.html
+  ```
+* Run server in the container
+  ```
+  emrun --no_browser --no_emrun_detect --hostname=0.0.0.0 --port 8080 .
+  ```
 * View in a web browser
   * Go to http://localhost:5000/src/hello/hello.html (or http://<MACHINE_VM_IP>:5000/src/hello/hello.html)
-
+  * Go to http://localhost:5000/src/hello2/hello2.html
   * Go to http://localhost:5000/src/question/question.html, enter a number in the popup window and press ENTER, then press CANCEL when the popup appears again
-
   * Go to http://localhost:5000/src/quiz/quiz.html, enter 1 in popup window and press ENTER, then enter "wasm" in next popup window and press ENTER, then press CANCEL.
-    * WARNING: Does not show the output in the Emscripten console, even though running the compiled C program works with `./src/quiz/quiz`
 
 ## TODO <a id="chapter-todo"></a>
 
@@ -66,6 +70,8 @@ Example programs compiled to [WebAssembly](http://webassembly.org/) (WASM), serv
   # Delete all images
   docker rmi $(docker images -q)
   ```
+3. Problem: `quiz.c` initially did not show the output in the Emscripten console of the webpage, even though running the compiled C program works by running the compiled file with `./src/quiz/quiz`
+  * Solution: After reading the ["Calling a custom function defined in C" section at this link](https://developer.mozilla.org/en-US/docs/WebAssembly/C_to_wasm) it highlighted that if you create any other functions in the C program such as `int menu()` other than the default `main()` function, then you have to apply the `EMSCRIPTEN_KEEPALIVE` declaration to it (i.e. `int EMSCRIPTEN_KEEPALIVE menu()` to adds the functions to the exported functions list, otherwise that function will be eliminated as dead code and vanish when you compile the C program to JavaScript. Additionally, in order to use `EMSCRIPTEN_KEEPALIVE`, you have to import `#include <emscripten/emscripten.h>` at the top of the same C program file.
 
 ## FAQ <a id="chapter-faq"></a>
 
