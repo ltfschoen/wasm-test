@@ -30,12 +30,21 @@ Example programs compiled to [WebAssembly](http://webassembly.org/) (WASM), serv
   ```
   emrun --no_browser --no_emrun_detect --hostname=0.0.0.0 --port 8080 .
   ```
-* Go to http://localhost:5000/src/hello/hello.html (or http://<MACHINE_VM_IP>:5000/src/hello/hello.html)
 
-* Go to http://localhost:5000/src/question/question.html, enter a number in the popup window and press ENTER, then press CANCEL when the popup appears again
+* Use Emscripten to generate a binary WASM module (`.wasm`) from our C program (`.c`), a HTML (`.html`) page and JavaScript (`.js`) "glue" code to load, compile, and instantiate the WASM code and display its output in a web browser
+  ```
+  emcc /code/src/hello/hello.c -s WASM=1 -o /code/src/hello/hello.html
+  emcc /code/src/question/question.c -s WASM=1 -o /code/src/question/question.html
+  emcc /code/src/quiz/quiz.c -s WASM=1 -o /code/src/quiz/quiz.html
+  ```
 
-* Go to http://localhost:5000/src/quiz/quiz.html, enter 1 in popup window and press ENTER, then enter "wasm" in next popup window and press ENTER, then press CANCEL.
-  * WARNING: Does not show the output in the Emscripten console, even though running the compiled C program works with `./src/quiz/quiz`
+* View in a web browser
+  * Go to http://localhost:5000/src/hello/hello.html (or http://<MACHINE_VM_IP>:5000/src/hello/hello.html)
+
+  * Go to http://localhost:5000/src/question/question.html, enter a number in the popup window and press ENTER, then press CANCEL when the popup appears again
+
+  * Go to http://localhost:5000/src/quiz/quiz.html, enter 1 in popup window and press ENTER, then enter "wasm" in next popup window and press ENTER, then press CANCEL.
+    * WARNING: Does not show the output in the Emscripten console, even though running the compiled C program works with `./src/quiz/quiz`
 
 ## TODO <a id="chapter-todo"></a>
 
@@ -102,3 +111,4 @@ docker inspect --format='{{.NetworkSettings.Networks.wasmtest_default.IPAddress}
 
 * Web Assembly (WASM) Developers Guide - http://webassembly.org/getting-started/developers-guide/
 * Create a Dockerfile - https://docs.docker.com/compose/gettingstarted/#step-2-create-a-dockerfile
+* Mozilla WASM - https://developer.mozilla.org/en-US/docs/WebAssembly/C_to_wasm
