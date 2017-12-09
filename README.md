@@ -33,12 +33,16 @@ Example programs compiled to [WebAssembly](http://webassembly.org/) (WASM), serv
 * Use Emscripten to generate a binary WASM module (`.wasm`) from our C program (`.c`), a HTML (`.html`) page and JavaScript (`.js`) "glue" code to load, compile, and instantiate the WASM code and display its output in a web browser
   ```
   emcc /code/src/hello/hello.c -s WASM=1 -o /code/src/hello/hello.html
+
   emcc /code/src/question/question.c -s WASM=1 -o /code/src/question/question.html
+
   emcc /code/src/quiz/quiz.c -s WASM=1 -o /code/src/quiz/quiz.html
   ```
 * Perform the above using a [custom HTML template](https://developer.mozilla.org/en-US/docs/WebAssembly/C_to_wasm): 
   ```
   emcc -o /code/src/hello2/hello2.html /code/src/hello2/hello2.c -O3 -s WASM=1 --shell-file /emsdk/emscripten/incoming/src/shell_minimal.html
+
+  emcc -o /code/src/quiz2/quiz2.html /code/src/quiz2/quiz2.c -O3 -s WASM=1 --shell-file /code/src/quiz2/html_template/quiz2_minimal.html -s NO_EXIT_RUNTIME=1
   ```
 * Run server in the container
   ```
@@ -47,11 +51,13 @@ Example programs compiled to [WebAssembly](http://webassembly.org/) (WASM), serv
 * View in a web browser
   * Go to http://localhost:5000/src/hello/hello.html (or http://<MACHINE_VM_IP>:5000/src/hello/hello.html)
   * Go to http://localhost:5000/src/hello2/hello2.html
-  * Go to http://localhost:5000/src/question/question.html, enter a number in the popup window and press ENTER, then press CANCEL when the popup appears again
-  * Go to http://localhost:5000/src/quiz/quiz.html, enter 1 in popup window and press ENTER, then enter "wasm" in next popup window and press ENTER, then press CANCEL.
+  * Go to http://localhost:5000/src/question/question.html, enter a number in the popup window and press ENTER, then press CANCEL when the popup appears again.
+  * Go to http://localhost:5000/src/quiz/quiz.html, enter 1 in popup window and press ENTER, then enter "wasm" in next popup window and press ENTER, then press CANCEL. View the browser Console to debug if freezes to view the C program `prinf` outputs. WARNING: Do not press CANCEL before first entering 1 to play the game or it will freeze.
+  * Go to http://localhost:5000/src/quiz2/quiz2.html. Click the "Start Quiz" button. Enter 1 in popup window and press ENTER, then enter "wasm" in next popup window and press ENTER, then press CANCEL. View the browser Console to debug if freezes to view the C program `prinf` outputs. WARNING: Do not press CANCEL before first entering 1 to play the game or it will freeze. 
 
 ## TODO <a id="chapter-todo"></a>
 
+* [ ] - Fix so displays outputs on screen immediately without blocking when requesting user input in popup window
 * [ ] - Fix so compiling the programs within the Dockerfile generates all outputs. Currently it only works when you compile once you are in the container bash. The repository source control already contains all pre-compiled outputs. 
 * [ ] - Get CMake from apt-get if possible
 * [ ] - Get Python 2.7 with apt-get install python2 and also python2-dev

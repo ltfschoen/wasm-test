@@ -52,11 +52,12 @@ ENV PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/emsdk/em
 # RUN echo 'PATH="/emsdk/emscripten/1.37.22/emcc:$PATH";' >> ~/.bashrc && . ~/.bashrc
 # RUN echo 'PATH="/emsdk/emscripten/1.37.22/emrun:$PATH";' >> ~/.bashrc && . ~/.bashrc
 
-RUN mkdir -p /code/src/hello /code/src/question /code/src/quiz
+RUN mkdir -p /code/src/hello /code/src/hello2 /code/src/question /code/src/quiz /code/src/quiz2
 COPY ./src/hello/hello.c /code/src/hello 
 COPY ./src/hello2/hello2.c /code/src/hello2 
 COPY ./src/question/question.c /code/src/question
 COPY ./src/quiz/quiz.c /code/src/quiz 
+COPY ./src/quiz2/quiz2.c /code/src/quiz2 
 # Note: C file input and HTML file output must be in same directory 
 # FIXME - When fix $PATH then change to just `emcc` and `emrun`
 # RUN emcc /code/src/hello/hello.c -s WASM=1 -o /code/src/hello/hello.html

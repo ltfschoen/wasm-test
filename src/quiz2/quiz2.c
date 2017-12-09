@@ -7,11 +7,14 @@
 int menu();
 
 int main(int argc, char ** argv) {
-  printf ("\n Welcome to the quiz!\n");
-  menu();
-  printf ("\n\n Thanks for playing.\n");
+  printf ("\n Welcome to the quiz! Click the 'Start Quiz' button...\n");
+  // Exported function `menu() is called from JavaScript instead
   return 0;
 }
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
  * Function: menu
@@ -65,11 +68,13 @@ int EMSCRIPTEN_KEEPALIVE menu() {
           fgets(quiz_answer_user_input_latest, sizeof(quiz_answer_user_input_latest), stdin);
           if (strcmp(quiz_answer_user_input_latest, "0\n") == 0) {
             menu_user_input_latest = 0; /* allow exit */
+            printf ("\n\n Thanks for playing.\n");
             break;
           }
           strcpy(quiz_answer_user_input, quiz_answer_user_input_latest);
           if (strcmp(quiz_answer_user_input, "wasm\n") == 0) {
             printf ("\n Correct!\n");
+            printf ("\n\n Thanks for playing.\n");
             menu_user_input_latest = 0; /* allow exit */
             break;
           } else {
@@ -84,3 +89,7 @@ int EMSCRIPTEN_KEEPALIVE menu() {
   }
   return menu_user_input_latest;
 }
+
+#ifdef __cplusplus
+}
+#endif
