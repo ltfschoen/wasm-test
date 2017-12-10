@@ -41,6 +41,15 @@ RUN cd ./emsdk && bash ./emsdk_env.sh --build=Release
 # RUN echo 'export PATH="/emsdk/emscripten/incoming/emcc:$PATH";' >> ~/.bashrc && . ~/.bashrc
 # RUN echo 'export PATH="/emsdk/emscripten/incoming/emrun:$PATH";' >> ~/.bashrc && . ~/.bashrc
 
+# Install Node.js
+RUN apt-get install --yes curl
+# RUN curl --silent --location https://deb.nodesource.com/setup_4.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+# RUN add-apt-repository -y ppa:chris-lea/node.js
+RUN apt-get install -y nodejs
+# https://yarnpkg.com/en/docs/install
+RUN npm install -g yarn
+
 # Alternative approach to change $PATH
 ENV PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/emsdk/emscripten/incoming"
 
@@ -52,17 +61,18 @@ ENV PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/emsdk/em
 # RUN echo 'PATH="/emsdk/emscripten/1.37.22/emcc:$PATH";' >> ~/.bashrc && . ~/.bashrc
 # RUN echo 'PATH="/emsdk/emscripten/1.37.22/emrun:$PATH";' >> ~/.bashrc && . ~/.bashrc
 
-RUN mkdir -p /code/src/hello /code/src/hello2 /code/src/question /code/src/quiz /code/src/quiz2
-COPY ./src/hello/hello.c /code/src/hello 
-COPY ./src/hello2/hello2.c /code/src/hello2 
-COPY ./src/question/question.c /code/src/question
-COPY ./src/quiz/quiz.c /code/src/quiz 
-COPY ./src/quiz2/quiz2.c /code/src/quiz2 
+RUN mkdir -p /code/apps/hello /code/apps/hello2 /code/apps/question /code/apps/quiz /code/apps/quiz2
+RUN mkdir -p /code/apps/wasm-playground/dist
+COPY ./apps/hello/hello.c /code/apps/hello 
+COPY ./apps/hello2/hello2.c /code/apps/hello2 
+COPY ./apps/question/question.c /code/apps/question
+COPY ./apps/quiz/quiz.c /code/apps/quiz 
+COPY ./apps/quiz2/quiz2.c /code/apps/quiz2 
 # Note: C file input and HTML file output must be in same directory 
 # FIXME - When fix $PATH then change to just `emcc` and `emrun`
-# RUN emcc /code/src/hello/hello.c -s WASM=1 -o /code/src/hello/hello.html
-# RUN emcc /code/src/question/question.c -s WASM=1 -o /code/src/question/question.html
-# RUN emcc /code/src/quiz/quiz.c -s WASM=1 -o /code/src/quiz/quiz.html
+# RUN emcc /code/apps/hello/hello.c -s WASM=1 -o /code/apps/hello/hello.html
+# RUN emcc /code/apps/question/question.c -s WASM=1 -o /code/apps/question/question.html
+# RUN emcc /code/apps/quiz/quiz.c -s WASM=1 -o /code/apps/quiz/quiz.html
 # Note: Must specifiy hostname of 0.0.0.0 or use container IP address (see README.md)
 # RUN emrun --no_browser --no_emrun_detect --hostname=0.0.0.0 --port 8080 .
 
